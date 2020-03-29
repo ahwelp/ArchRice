@@ -47,13 +47,15 @@
   pacman -S --noconfirm git
     sudo -u $SUDO_USER git config --global user.email 'ahwelp@test.com'
     sudo -u $SUDO_USER git config --global user.name "ahwelp"
-
   pacman -S --noconfirm openssh
   pacman -S --noconfirm openconnect
-  #pacman -S --noconfirm docker
-  #pacman -S --noconfirm docker-compose
   
-
+#The vim
+  pacman -S --noconfirm vim
+  wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
+  rm -rf ~/.vim
+  tar vzfx /tmp/vim.tar
+  echo "source ~/.vim/.vimrc" > ~/.vimrc
 
 #A browser
   git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
