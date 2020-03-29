@@ -21,6 +21,7 @@
   pacman -S --noconfirm upower
   pacman -S --noconfirm wget
   pacman -S --noconfirm arandr
+  pacman -S --noconfirm ntfs-3g
 
 #FruFru things
   pacman -S --noconfirm feh
