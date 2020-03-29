@@ -72,7 +72,16 @@
     make && make install
 
 #The .files
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > sudo -u $SUDO_USER  ~/.bash_login
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > sudo -u $SUDO_USER  ~/.bashrc
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > sudo -u $SUDO_USER  ~/.xinitrc
+  
+  if [ "$USER" == "root" ] && [ "$SUDO_USER" == "root" ]; then
+    userdir='/root/'
+  elif [ "$USER" != "root" ]; then
+    userdir="/home/$USER/"
+  else	
+    userdir="/home/$SUDO_USER/"
+  fi
+  
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > $userdir/.bash_login
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > $userdir/.bashrc
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > $userdir/.xinitrc
   
