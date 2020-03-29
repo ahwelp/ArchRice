@@ -1,5 +1,3 @@
-exit 1
-
 #Locale info
   ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
   echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
@@ -64,7 +62,9 @@ exit 1
     make && make install
 
 #The .files
-  
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > ~/.bash_login
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > ~/.bashrc
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > ~/.bash_login
   
   
   
