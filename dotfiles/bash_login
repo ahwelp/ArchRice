@@ -1,0 +1,3 @@
+
+#Start GUI
+[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x dwm  >/dev/null && exec startx

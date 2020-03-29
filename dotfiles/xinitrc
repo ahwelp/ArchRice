@@ -1,0 +1,21 @@
+#Config for GUI
+  export XDG_SESSION_TYPE=x11
+  export GDK_BACKEND=x11
+
+#Config for netbeans
+  export _JAVA_AWT_WM_NONREPARENTING=1
+
+#System monitoring for DWM
+  while true; do
+      ~/.config/pcinfo/script.sh
+      sleep 5s
+  done &
+
+#American keyboard with acentuation
+  setxkbmap -layout us -variant intl
+
+#Set Random Wallpaper
+  feh --randomize --bg-fill wallpapers/
+
+#Start DWM Window Manager
+  [ "$(tty)" = "/dev/tty1" ] && ! exec dwm
