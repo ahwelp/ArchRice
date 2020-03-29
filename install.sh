@@ -15,6 +15,12 @@
   echo "iface $interface inet dhcp" >> /etc/network/interfaces
   echo "nameserver 1.1.1.1" > /etc/resolv.conf
 
+#Some x-things
+  pacman -S --noconfirm xorg-server
+  pacman -S --noconfirm xorg-xinit
+  pacman -S --noconfirm xcompmgr
+  pacman -S --noconfirm xorg-xsetroot
+
 #System Helpers
   pacman -S --noconfirm man
   pacman -S --noconfirm curl
@@ -39,10 +45,7 @@
   #pacman -S --noconfirm docker
   #pacman -S --noconfirm docker-compose
   
-#Some x-things
-  pacman -S --noconfirm xorg-server
-  pacman -S --noconfirm xcompmgr
-  pacman -S --noconfirm xorg-xsetroot
+
 
 #A browser
   git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
@@ -65,7 +68,7 @@
 #The .files
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > ~/.bash_login
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > ~/.bashrc
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > ~/.bash_login
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > ~/.xinitrc
   
   
   
