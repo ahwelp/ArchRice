@@ -11,6 +11,9 @@
       sleep 5s
   done &
 
+#Brasilian Keyboard ABNT2
+  #setxkbmap -layout br -variant abnt2
+
 #American keyboard with acentuation
   setxkbmap -layout us -variant intl
 
