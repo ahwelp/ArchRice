@@ -1,3 +1,5 @@
+#https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_T450s
+
 #Locale info
   ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
   echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
@@ -28,6 +30,12 @@
   pacman -S --noconfirm wget
   pacman -S --noconfirm arandr
   pacman -S --noconfirm ntfs-3g
+  
+#Audio Configuration - F*** Why so hard? It's just sound
+  pacman -S --noconfirm alsa-firmware #Just to be shure
+  pacman -S --noconfirm alsa-utils #The main package
+    usermod -a -G audio $SUDO_USER #Add the user on the group
+  echo "options snd_hda_intel index=1,0" > /etc/modprobe.d/thinkpad-t450s.conf #I use a think pad, sooo...
 
 #FruFru things
   pacman -S --noconfirm feh
@@ -84,4 +92,6 @@
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > $userdir/.bash_login
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > $userdir/.bashrc
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > $userdir/.xinitrc
+  
+  mkdir -p $userdir/.config/wallpapers
   
