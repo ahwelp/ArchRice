@@ -53,6 +53,12 @@
     cd /usr/src/brave-bin
     sudo -u $SUDO_USER makepkg -si
 
+#The Suckless Dmenu
+  git clone http://git.suckless.org/dmenu /usr/src/dmenu
+    chmod -R 777 /usr/src/dmenu
+    cd /usr/src/dmenu
+    make && make install
+
 #The Suckless DWM
   git clone http://git.suckless.org/dwm /usr/src/dwm
     chmod -R 777 /usr/src/dwm
@@ -66,9 +72,7 @@
     make && make install
 
 #The .files
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > ~/.bash_login
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > ~/.bashrc
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > ~/.xinitrc
-  
-  
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > sudo -u $SUDO_USER  ~/.bash_login
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > sudo -u $SUDO_USER  ~/.bashrc
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > sudo -u $SUDO_USER  ~/.xinitrc
   
