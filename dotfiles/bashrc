@@ -1,0 +1,4 @@
+alias vpn="openconnect --protocol=gp vpn.univates.br"
+alias src="cd /usr/src"
+
+neofetch
