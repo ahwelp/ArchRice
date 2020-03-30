@@ -20,5 +20,8 @@
 #Set Random Wallpaper
   feh --randomize --bg-fill wallpapers/
 
+#Transparency (Experimental)
+  xcompmgr -c &
+
 #Start DWM Window Manager
   [ "$(tty)" = "/dev/tty1" ] && ! exec dwm

@@ -33,6 +33,7 @@
   pacman -S --noconfirm xorg-server
   pacman -S --noconfirm xorg-xinit
   pacman -S --noconfirm xcompmgr
+  pacman -S --noconfirm transset-df
   pacman -S --noconfirm xorg-xsetroot
 
 #System Helpers
