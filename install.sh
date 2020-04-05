@@ -133,3 +133,6 @@
 #System information
   mkdir -p $userdir/.config/pcinfo
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/pcinfo/script.sh > $userdir/.config/pcinfo/script.sh
+
+#Give back to Caesar what is Caesar's and to God what is God's
+  chown -R $username $userdir
