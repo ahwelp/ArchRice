@@ -91,7 +91,7 @@
   wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
   rm -rf $userdir/.vim
   tar vzfx /tmp/vim.tar
-  echo "source ~/.vim/.vimrc" > userdir/.vimrc
+  echo "source ~/.vim/.vimrc" > $userdir/.vimrc
 
 #A browser
   git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
