@@ -95,26 +95,33 @@
 
 #A browser
   git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
-    chmod -R 777 /usr/src/brave-bin
     cd /usr/src/brave-bin
+    git config --global core.filemode false
+    chmod -R 777 /usr/src/brave-bin
     sudo -u $username makepkg -si
 
 #The Suckless Dmenu
   git clone http://git.suckless.org/dmenu /usr/src/dmenu
-    chmod -R 777 /usr/src/dmenu
     cd /usr/src/dmenu
+    git config --global core.filemode false
+    chmod -R 777 /usr/src/dmenu
+      #patches
     make && make install
 
 #The Suckless DWM
   git clone http://git.suckless.org/dwm /usr/src/dwm
-    chmod -R 777 /usr/src/dwm
     cd /usr/src/dwm
+    chmod -R 777 /usr/src/dwm
+    git config --global core.filemode false    
+      #patches
     make && make install
 
 #The Suckless ST
   git clone http://git.suckless.org/st /usr/src/st
-    chmod -R 777 /usr/src/st
     cd /usr/src/st
+    git config --global core.filemode false
+    chmod -R 777 /usr/src/st
+      #patches
     make && make install
 
 #The .files
