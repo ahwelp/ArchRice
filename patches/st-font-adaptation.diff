@@ -1,0 +1,22 @@
+diff --git a/config.def.h b/config.def.h
+index 546edda..a114851 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -5,7 +5,7 @@
+  *
+  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
+  */
+-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
++static char *font = "Liberation Mono:pixelsize=20:antialias=true:autohint=true";
+ static int borderpx = 2;
+ 
+ /*
+@@ -89,7 +89,7 @@ static const char *colorname[] = {
+ 	"red3",
+ 	"green3",
+ 	"yellow3",
+-	"blue2",
++	"magenta1",
+ 	"magenta3",
+ 	"cyan3",
+ 	"gray90",
