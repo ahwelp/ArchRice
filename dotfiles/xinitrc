@@ -11,17 +11,16 @@
       sleep 5s
   done &
 
-#Brasilian Keyboard ABNT2
-  #setxkbmap -layout br -variant abnt2
-
-#American keyboard with acentuation
-  setxkbmap -layout us -variant intl
-
-#Set Random Wallpaper
-  feh --randomize --bg-fill ~/.config/wallpapers/
+#keyboard layouts
+  setxkbmap -layout us -variant intl #$American keyboard with acentuation
+  #setxkbmap -layout br -variant abnt2 #Brasilian Keyboard ABNT2
 
 #Transparency (Experimental)
   xcompmgr -c &
+
+#Set Random Wallpaper
+  rm -rf ~/.fehbg
+  feh --randomize --bg-fill ~/.config/wallpapers/
 
 #Start DWM Window Manager
   [ "$(tty)" = "/dev/tty1" ] && ! exec dwm
