@@ -1,4 +1,9 @@
-alias vpn="openconnect --protocol=gp vpn.univates.br"
-alias src="cd /usr/src"
+#Create some aliases
+  alias vpn="openconnect --protocol=gp vpn.univates.br"
+  alias src="cd /usr/src"
 
-neofetch
+#Give transparence to the new terminal window
+  [ -n "$XTERM_VERSION" ] && transset-df --id "$WINDOWID" >/dev/null
+
+#For style | Slow, but with style
+  neofetch

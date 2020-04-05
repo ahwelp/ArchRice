@@ -36,6 +36,11 @@
   pacman -S --noconfirm transset-df
   pacman -S --noconfirm xorg-xsetroot
 
+#Create the xorg file And configure transparence
+  Xorg :0 -configure
+  mv /root/xorg.conf.new /etc/X11/xorg.conf
+  printf 'Section "Extensions" \n Option  "Composite" "true" \n EndSection' >> /etc/X11/xorg.conf
+
 #System Helpers
   pacman -S --noconfirm man
   pacman -S --noconfirm curl
@@ -81,8 +86,8 @@
   
 #The dev  
   pacman -S --noconfirm git
-    sudo -u $username git config --global user.email 'ahwelp@test.com'
-    sudo -u $username git config --global user.name "ahwelp"
+    sudo -u $username git config --add user.email 'ahwelp@test.com'
+    sudo -u $username git config --add user.name "ahwelp"
   pacman -S --noconfirm openssh
   pacman -S --noconfirm openconnect
   
@@ -96,14 +101,14 @@
 #A browser
   git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
     cd /usr/src/brave-bin
-    git config --global core.filemode false
+    git config --add core.filemode false
     chmod -R 777 /usr/src/brave-bin
     sudo -u $username makepkg -si
 
 #The Suckless Dmenu
   git clone http://git.suckless.org/dmenu /usr/src/dmenu
     cd /usr/src/dmenu
-    git config --global core.filemode false
+    git config --add core.filemode false
     chmod -R 777 /usr/src/dmenu
       #patches
     make && make install
@@ -112,16 +117,19 @@
   git clone http://git.suckless.org/dwm /usr/src/dwm
     cd /usr/src/dwm
     chmod -R 777 /usr/src/dwm
-    git config --global core.filemode false    
+    git config --add core.filemode false    
       #patches
     make && make install
 
 #The Suckless ST
   git clone http://git.suckless.org/st /usr/src/st
     cd /usr/src/st
-    git config --global core.filemode false
+    git config --add core.filemode false
     chmod -R 777 /usr/src/st
-      #patches
+      curl https://st.suckless.org/patches/alpha/st-alpha-0.8.2.diff | git apply
+      curl https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff | git apply
+      curl https://st.suckless.org/patches/scrollback/st-scrollback-20200504-28ad288.diff | git apply
+      curl https://st.suckless.org/patches/scrollback/st-scrollback-mouse-20191024-a2c479c.diff | git apply
     make && make install
 
 #The .files
