@@ -1,4 +1,4 @@
-# arch_rice
+# ArchRice
 
 ```
 #Create a new User
