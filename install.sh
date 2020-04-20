@@ -11,10 +11,11 @@
     echo "There is a bootloader"
   fi
 
-#Locale info
+#Locale info ##May need to generate for the user too not just root
   ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-  echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
   echo "pt_BR ISO-8859-1" >> /etc/locale.gen
+  echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
+  echo "LC_ALL=pt_BR.UTF-8" >> /etc/enviroment
   localectl set-locale LANG=pt_BR.UTF-8
   locale-gen
 
@@ -42,6 +43,7 @@
   printf 'Section "Extensions" \n Option  "Composite" "true" \n EndSection' >> /etc/X11/xorg.conf
 
 #System Helpers
+  pacman -S --noconfirm git
   pacman -S --noconfirm man
   pacman -S --noconfirm curl
   pacman -S --noconfirm wget
@@ -61,6 +63,13 @@
     username=$SUDO_USER
   fi
   
+#YAY - Use with yay -S
+  git clone https://aur.archlinux.org/yay-bin.git /usr/src/yay-bin
+  cd /usr/src/yay-bin
+  git config --add core.filemode false
+  chmod -R 777 /usr/src/yay-bin
+  sudo -u $username makepkg -si --noconfirm
+
 #Audio Configuration - F*** Why so hard? It's just sound
   pacman -S --noconfirm alsa-firmware #Just to be shure
   pacman -S --noconfirm alsa-utils #The main package
@@ -77,6 +86,8 @@
   pacman -S --noconfirm vlc
   pacman -S --noconfirm nemo
   pacman -S --noconfirm zathura
+  pacman -S --noconfirm transmission-cli
+
   
 #Branding
   curl https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch > /usr/local/bin/neofetch
@@ -93,6 +104,7 @@
   
 #The vim
   pacman -S --noconfirm vim
+  yay -S nerd-fonts-inconsolata --noconfirm
   wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
   rm -rf $userdir/.vim
   tar vzfx /tmp/vim.tar
@@ -103,7 +115,7 @@
     cd /usr/src/brave-bin
     git config --add core.filemode false
     chmod -R 777 /usr/src/brave-bin
-    sudo -u $username makepkg -si
+    sudo -u $username makepkg -si --noconfirm
 
 #The Suckless Dmenu
   git clone http://git.suckless.org/dmenu /usr/src/dmenu
@@ -122,14 +134,16 @@
     make && make install
 
 #The Suckless ST
+  rm -rf /usr/src/st
   git clone http://git.suckless.org/st /usr/src/st
     cd /usr/src/st
     git config --add core.filemode false
     chmod -R 777 /usr/src/st
-      curl https://st.suckless.org/patches/alpha/st-alpha-0.8.2.diff | git apply
-      curl https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff | git apply
-      curl https://st.suckless.org/patches/scrollback/st-scrollback-20200504-28ad288.diff | git apply
-      curl https://st.suckless.org/patches/scrollback/st-scrollback-mouse-20191024-a2c479c.diff | git apply
+    git checkout tags/0.8.2
+      curl https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff | git apply 
+      curl https://st.suckless.org/patches/scrollback/st-scrollback-0.8.2.diff | git apply 
+      curl https://st.suckless.org/patches/scrollback/st-scrollback-mouse-0.8.2.diff | git apply 
+      curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
     make && make install
 
 #The .files
@@ -148,6 +162,7 @@
 #System information
   mkdir -p $userdir/.config/pcinfo
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/pcinfo/script.sh > $userdir/.config/pcinfo/script.sh
+  chmod +x $userdir/.config/pcinfo/script.sh
 
 #Give back to Caesar what is Caesar's and to God what is God's
   chown -R $username $userdir

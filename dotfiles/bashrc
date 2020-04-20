@@ -1,9 +1,10 @@
 #Create some aliases
   alias vpn="openconnect --protocol=gp vpn.univates.br"
   alias src="cd /usr/src"
+  alias emacs="emacs --no-window-system ."
 
 #Give transparence to the new terminal window
-  [ -n "$XTERM_VERSION" ] && transset-df --id "$WINDOWID" >/dev/null
+  transset-df --id "$WINDOWID" 0.9 >/dev/null #https://wiki.archlinux.org/index.php/Xterm#Automatic_transparency
 
 #For style | Slow, but with style
   neofetch
