@@ -16,7 +16,7 @@
   #setxkbmap -layout br -variant abnt2 #Brasilian Keyboard ABNT2
 
 #Transparency (Experimental)
-  xcompmgr -c &
+  #xcompmgr -c &
 
 #Set Random Wallpaper
   rm -rf ~/.fehbg

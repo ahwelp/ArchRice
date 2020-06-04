@@ -1,10 +1,21 @@
-#Create some aliases
-  alias vpn="openconnect --protocol=gp vpn.univates.br"
-  alias src="cd /usr/src"
-  alias emacs="emacs --no-window-system ."
 
-#Give transparence to the new terminal window
-  transset-df --id "$WINDOWID" 0.9 >/dev/null #https://wiki.archlinux.org/index.php/Xterm#Automatic_transparency
+#Open company VPN
+  alias vpn="sudo openconnect --protocol=gp vpn.univates.br"
+
+#Colse company VPN
+  alias cvpn="pgrep openconnect | xargs sudo kill"
+
+#Go to the SRC folder
+  alias src="cd /usr/src"
+
+#Emacs open on the command line
+  alias emacs="emacs -nw ."
+
+#Want transparency? Uncomment
+  #transset-df --id "$WINDOWID" 0.9 >/dev/null
+
+#Set the editor
+EDITOR="/usr/bin/vim"
 
 #For style | Slow, but with style
   neofetch

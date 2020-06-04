@@ -13,9 +13,9 @@
 
 #Locale info ##May need to generate for the user too not just root
   ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-  echo "pt_BR ISO-8859-1" >> /etc/locale.gen
-  echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
-  echo "LC_ALL=pt_BR.UTF-8" >> /etc/enviroment
+    echo "pt_BR ISO-8859-1" >> /etc/locale.gen
+    echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
+    echo "LC_ALL=pt_BR.UTF-8" >> /etc/enviroment
   localectl set-locale LANG=pt_BR.UTF-8
   locale-gen
 
@@ -35,7 +35,7 @@
   pacman -S --noconfirm xorg-xinit
   pacman -S --noconfirm xcompmgr
   pacman -S --noconfirm transset-df
-  pacman -S --noconfirm xorg-xsetroot
+  pacman -S --noconfirm xorg-xsetroot xorg-xkill
 
 #Create the xorg file And configure transparence
   Xorg :0 -configure
@@ -44,14 +44,14 @@
 
 #System Helpers
   pacman -S --noconfirm git
-  pacman -S --noconfirm man
-  pacman -S --noconfirm curl
-  pacman -S --noconfirm wget
-  pacman -S --noconfirm lm_sensors
-  pacman -S --noconfirm arandr
-  pacman -S --noconfirm ntfs-3g
+  pacman -S --noconfirm man 
+  pacman -S --noconfirm curl 
+  pacman -S --noconfirm wget 
+  pacman -S --noconfirm lm_sensors 
+  pacman -S --noconfirm arandr 
+  pacman -S --noconfirm ntfs-3g 
 
-#Define the user home dir and identity
+#Def ine the user home dir and identity
   if [ "$USER" == "root" ] && [ "$SUDO_USER" == "root" ]; then
     userdir='/root/'
     username='root'
@@ -74,8 +74,7 @@
   pacman -S --noconfirm alsa-firmware #Just to be shure
   pacman -S --noconfirm alsa-utils #The main package
     usermod -a -G audio $username #Add the user on the group
-    
-  #I use a ThinkPad, sooo...    
+  #I use this ThinkPad, sooo...    
   product=`cat /sys/devices/virtual/dmi/id/product_version`
   if [ "$product" == "ThinkPad T450" ]; then
     echo "options snd_hda_intel index=1,0" > /etc/modprobe.d/thinkpad-t450s.conf 
@@ -85,9 +84,8 @@
   pacman -S --noconfirm feh
   pacman -S --noconfirm vlc
   pacman -S --noconfirm nemo
-  pacman -S --noconfirm zathura
+  #pacman -S --noconfirm zathura
   pacman -S --noconfirm transmission-cli
-
   
 #Branding
   curl https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch > /usr/local/bin/neofetch
@@ -99,9 +97,13 @@
   pacman -S --noconfirm git
     sudo -u $username git config --add user.email 'ahwelp@test.com'
     sudo -u $username git config --add user.name "ahwelp"
-  pacman -S --noconfirm openssh
+  pacman -S --noconfirm openssh 
   pacman -S --noconfirm openconnect
-  
+
+#The Secrets
+  yay -S --noconfirm veracrypt-git
+  yay -S --noconfirm secure-delete
+
 #The vim
   pacman -S --noconfirm vim
   yay -S nerd-fonts-inconsolata --noconfirm
@@ -129,8 +131,8 @@
   git clone http://git.suckless.org/dwm /usr/src/dwm
     cd /usr/src/dwm
     chmod -R 777 /usr/src/dwm
-    git config --add core.filemode false    
-      #patches
+    git config --add core.filemode false
+      curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
     make && make install
 
 #The Suckless ST
@@ -140,7 +142,8 @@
     git config --add core.filemode false
     chmod -R 777 /usr/src/st
     git checkout tags/0.8.2
-      curl https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff | git apply 
+      curl https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.2.diff | git apply 
+      #curl https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff | git apply 
       curl https://st.suckless.org/patches/scrollback/st-scrollback-0.8.2.diff | git apply 
       curl https://st.suckless.org/patches/scrollback/st-scrollback-mouse-0.8.2.diff | git apply 
       curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
@@ -153,11 +156,7 @@
   
 #Download some wallpapers
   mkdir -p $userdir/.config/wallpapers
-  wget https://github.com/ahwelp/arch_rice/raw/master/wallpapers/01.png  -O $userdir/.config/wallpapers/01.png
-  wget https://github.com/ahwelp/arch_rice/raw/master/wallpapers/02.jpg  -O $userdir/.config/wallpapers/02.jpg
-  wget https://github.com/ahwelp/arch_rice/raw/master/wallpapers/03.jpg  -O $userdir/.config/wallpapers/03.jpg
-  wget https://github.com/ahwelp/arch_rice/raw/master/wallpapers/04.jpg  -O $userdir/.config/wallpapers/04.jpg
-  wget https://github.com/ahwelp/arch_rice/raw/master/wallpapers/05.jpeg -O $userdir/.config/wallpapers/05.jpeg
+  tar vzfx wallpaper.tar $userdir/.config/wallpapers
 
 #System information
   mkdir -p $userdir/.config/pcinfo
