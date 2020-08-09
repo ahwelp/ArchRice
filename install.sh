@@ -101,15 +101,15 @@
   pacman -S --noconfirm openconnect
 
 #The Secrets
-  yay -S --noconfirm veracrypt-git
-  yay -S --noconfirm secure-delete
+  sudo -u $username yay -S --noconfirm veracrypt-git
+  sudo -u $username yay -S --noconfirm secure-delete
 
 #The vim
   pacman -S --noconfirm vim
-  yay -S nerd-fonts-inconsolata --noconfirm
-  wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
+  sudo -u $username yay -S nerd-fonts-inconsolata --noconfirm
+  #wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
   rm -rf $userdir/.vim
-  tar vzfx /tmp/vim.tar
+  tar vzfx vim.tar -C $userdir
   echo "source ~/.vim/.vimrc" > $userdir/.vimrc
 
 #A browser
@@ -118,6 +118,11 @@
     git config --add core.filemode false
     chmod -R 777 /usr/src/brave-bin
     sudo -u $username makepkg -si --noconfirm
+
+#About the new NoteBook
+  if [ "$product" == "MacBookAir1,1" ]; then
+    sudo -u $username  yay -S b43-firmware
+  fi
 
 #The Suckless Dmenu
   git clone http://git.suckless.org/dmenu /usr/src/dmenu
