@@ -75,8 +75,8 @@
   pacman -S --noconfirm alsa-utils #The main package
     usermod -a -G audio $username #Add the user on the group
   #I use this ThinkPad, sooo...    
-  product=`cat /sys/devices/virtual/dmi/id/product_version`
-  if [ "$product" == "ThinkPad T450" ]; then
+  product=`cat /sys/devices/virtual/dmi/id/product_name`
+  if [ "$product" == "20BUS3V100" ]; then
     echo "options snd_hda_intel index=1,0" > /etc/modprobe.d/thinkpad-t450s.conf 
   fi
 
