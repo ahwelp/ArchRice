@@ -30,6 +30,10 @@
   echo "iface $interface inet dhcp" >> /etc/network/interfaces
   echo "nameserver 1.1.1.1" > /etc/resolv.conf
 
+#Wireless network
+  #https://wiki.archlinux.org/index.php/Netctl
+  #sudo pacman -S netctl dialog
+
 #Some x-things
   pacman -S --noconfirm xorg-server
   pacman -S --noconfirm xorg-xinit
