@@ -18,12 +18,12 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
     echo "pt_BR ISO-8859-1" >> /etc/locale.gen
     echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
     echo "LC_ALL=pt_BR.UTF-8" >> /etc/enviroment
-  localectl set-locale LANG=pt_BR.UTF-8
-  locale-gen
+  localectl set-locale LANG=pt_BR.UTF-8 && sudo -u $username localectl set-locale LANG=pt_BR.UTF-8
+  locale-gen && sudo -u $username locale-gen
 
 #Macbook network firmware
   if [ "$product" == "MacBookAir1,1" ]; then
-    sudo -u $username  yay -S b43-firmware
+    sudo -u $username yay -S b43-firmware
   fi
 
 #Base network
