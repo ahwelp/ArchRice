@@ -1,5 +1,3 @@
-cd ~/.config/pcInfo/
-
 #Calculate Battery
   for bat in /sys/class/power_supply/BAT?
   do

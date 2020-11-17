@@ -1,12 +1,14 @@
 #https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_T450s
 
+product=`cat /sys/devices/virtual/dmi/id/product_name`
+
 #UEFI Bootloader
   if [ ! -d "/boot/loader" ]; then
     bootctl install
     uuid=`cat /etc/fstab | grep ext4 | grep '/' | cut -d $'\t' -f1 | cut -d '=' -f 2`
     partuuid=`blkid | grep $uuid | cut -d' ' -f 7 | sed 's/\"//g'`
     printf "default arch\ntimeout 2" > /boot/loader/loader.conf
-    printf "title ArchLinux\nlinux /vmlinuz-linux\ninitrd /initramfs-linux.img\noptions root=$partuuid rw" > /boot/loader/entries/arch.conf
+    printf "title ArchLinux\nlinux /vmlinuz-linux\ninitrd /initramfs-linux.img\noptions root=$partuuid rw irqpoll" > /boot/loader/entries/arch.conf
   else
     echo "There is a bootloader"
   fi
@@ -16,8 +18,13 @@
     echo "pt_BR ISO-8859-1" >> /etc/locale.gen
     echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
     echo "LC_ALL=pt_BR.UTF-8" >> /etc/enviroment
-  localectl set-locale LANG=pt_BR.UTF-8
-  locale-gen
+  localectl set-locale LANG=pt_BR.UTF-8 && sudo -u $username localectl set-locale LANG=pt_BR.UTF-8
+  locale-gen && sudo -u $username locale-gen
+
+#Macbook network firmware
+  if [ "$product" == "MacBookAir1,1" ]; then
+    sudo -u $username yay -S b43-firmware
+  fi
 
 #Base network
   pacman -S --noconfirm networkmanager
@@ -29,6 +36,10 @@
   echo "auto $interface" >> /etc/network/interfaces
   echo "iface $interface inet dhcp" >> /etc/network/interfaces
   echo "nameserver 1.1.1.1" > /etc/resolv.conf
+
+#Wireless network
+  #https://wiki.archlinux.org/index.php/Netctl
+  #sudo pacman -S netctl dialog
 
 #Some x-things
   pacman -S --noconfirm xorg-server
@@ -75,8 +86,7 @@
   pacman -S --noconfirm alsa-utils #The main package
     usermod -a -G audio $username #Add the user on the group
   #I use this ThinkPad, sooo...    
-  product=`cat /sys/devices/virtual/dmi/id/product_version`
-  if [ "$product" == "ThinkPad T450" ]; then
+  if [ "$product" == "20BUS3V100" ]; then
     echo "options snd_hda_intel index=1,0" > /etc/modprobe.d/thinkpad-t450s.conf 
   fi
 
@@ -103,15 +113,15 @@
   pacman -S --noconfirm openconnect
 
 #The Secrets
-  yay -S --noconfirm veracrypt-git
-  yay -S --noconfirm secure-delete
+  sudo -u $username yay -S --noconfirm veracrypt-git
+  sudo -u $username yay -S --noconfirm secure-delete
 
 #The vim
   pacman -S --noconfirm vim
-  yay -S nerd-fonts-inconsolata --noconfirm
-  wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
+  sudo -u $username yay -S nerd-fonts-inconsolata --noconfirm
+  #wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
   rm -rf $userdir/.vim
-  tar vzfx /tmp/vim.tar
+  tar vzfx vim.tar -C $userdir
   echo "source ~/.vim/.vimrc" > $userdir/.vimrc
 
 #A browser
@@ -120,6 +130,8 @@
     git config --add core.filemode false
     chmod -R 777 /usr/src/brave-bin
     sudo -u $username makepkg -si --noconfirm
+
+
 
 #The Suckless Dmenu
   git clone http://git.suckless.org/dmenu /usr/src/dmenu
