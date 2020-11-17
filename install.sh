@@ -83,7 +83,9 @@
 #FruFru things
   pacman -S --noconfirm feh
   pacman -S --noconfirm vlc
-  pacman -S --noconfirm nemo
+  pacman -S --noconfirm nautilus
+    #Dark Theme for GTK
+    printf '[Settings] \n gtk-application-prefer-dark-theme = true ' >> /etc/gtk-3.0/settings.ini
   #pacman -S --noconfirm zathura
   pacman -S --noconfirm transmission-cli
   
