@@ -1,2 +1,2 @@
 setxkbmap -layout us -variant intl  #American keyboard with acentuation
-setxkbmap -layout br -variant abnt2 #Brasilian Keyboard ABNT2
+setxkbmap -layout br -variant abnt2 #Pure Brasilian Keyboard ABNT2

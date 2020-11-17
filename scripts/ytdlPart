@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#Check the stuff
+  [ "$1" == "" ] && ! exit #Needs a youtube link 
+  [ "$2" == "" ] && ! exit #Needs a time start
+  [ "$3" == "" ] && ! exit #Needs how many time to extract
+
+#Handle Audio and Video URL Streams
+  LINKS=`youtube-dl -g $1`
+  FIRST=`echo $LINKS | cut -d' ' -f1`
+  SECOND=`echo $LINKS | cut -d' ' -f2`
+
+#Handle filename
+  FILENAME=$4
+  [ "$4" == "" ] && ! FILENAME=`youtube-dl -e $1`".mp4" #If no name defined, get the video name
+  FILENAME=`echo $FILENAME | sed s/\ /_/g`        #No spaces on the filename
+
+#Do the download
+  ffmpeg -ss $2 -i "$FIRST" -t $3 -ss $2 -i "$SECOND" -t $3 -c copy -c:a aac $FILENAME

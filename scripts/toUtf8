@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#https://www.tecmint.com/convert-files-to-utf-8-encoding-in-linux/
+
+#Gather the base file type
+base=`file -i $1 | cut -d' ' -f3 | sed 's/charset=//g'`
+
+#Convert to UTF-8
+iconv -f $base -t UTF-8//TRANSLIT $1 -o $1

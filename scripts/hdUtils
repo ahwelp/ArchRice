@@ -1,0 +1,15 @@
+#!/bin/bash
+
+exit
+
+#Find badblocks and store list on file
+sudo badblocks -v /dev/sda > badsectors.txt
+
+#Ignore Badblocks on extN filesystems
+sudo e2fsck -l badsectors.txt /dev/sda
+
+#Ignore Badblocks on other filesystems
+sudo fsck -l badsectors.txt /dev/sda
+
+#Test drive write speed
+dd if=/dev/zero of=/tmp/test.img bs=1G count=1 oflag=dsync
