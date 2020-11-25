@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cat keiboards_source  | dmenu | xargs  
+cat keyboards_source  | dmenu | xargs  
 

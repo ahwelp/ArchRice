@@ -1,5 +1,28 @@
 #https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_T450s
 
+#[ "$1" == "st" ] && ! terminal() #Needs a youtube link 
+#[ "$1" == "dwm" ] && ! dwm()  #Needs a youtube link 
+#[ "$1" == "dmenu" ] && ! dmenu() #Needs a youtube link 
+
+#[ "$1" != "" ] && terminal && exit 
+
+#The Suckless ST
+terminal(){
+  rm -rf /usr/src/st
+  git clone http://git.suckless.org/st /usr/src/st
+    cd /usr/src/st
+    git config --add core.filemode false
+    chmod -R 777 /usr/src/st
+    git checkout tags/0.8.4
+      curl https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.2.diff | git apply 
+      #curl https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff | git apply 
+      curl https://st.suckless.org/patches/scrollback/st-scrollback-20200419-72e3f6c.diff | git apply 
+      curl https://st.suckless.org/patches/scrollback/st-scrollback-mouse-20191024-a2c479c.diff | git apply 
+      curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
+    make && make install
+}
+terminal
+
 product=`cat /sys/devices/virtual/dmi/id/product_name`
 
 #UEFI Bootloader
@@ -10,7 +33,8 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
     printf "default arch\ntimeout 2" > /boot/loader/loader.conf
     printf "title ArchLinux\nlinux /vmlinuz-linux\ninitrd /initramfs-linux.img\noptions root=$partuuid rw irqpoll" > /boot/loader/entries/arch.conf
   else
-    echo "There is a bootloader"
+    echo "There is a bootloader -- Force to continue"
+    exit
   fi
 
 #Locale info ##May need to generate for the user too not just root
@@ -96,8 +120,10 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
   pacman -S --noconfirm nautilus
     #Dark Theme for GTK
     printf '[Settings] \n gtk-application-prefer-dark-theme = true ' >> /etc/gtk-3.0/settings.ini
-  #pacman -S --noconfirm zathura
-  pacman -S --noconfirm transmission-cli
+  pacman -S --noconfirm zathura zathura-pdf-poppler
+  pacman -S --noconfirm transmission-cli #transmission-gtk ( YAY transmission-remote-cli-git )
+  pacman -S --noconfirm noto-fonts-emoji
+    yay -S libxft-bgra #Color emoji fix
   
 #Branding
   curl https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch > /usr/local/bin/neofetch
@@ -125,57 +151,56 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
   echo "source ~/.vim/.vimrc" > $userdir/.vimrc
 
 #A browser
+browser(){
   git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
     cd /usr/src/brave-bin
     git config --add core.filemode false
     chmod -R 777 /usr/src/brave-bin
     sudo -u $username makepkg -si --noconfirm
-
-
+}
+browser
 
 #The Suckless Dmenu
+dmenu(){
   git clone http://git.suckless.org/dmenu /usr/src/dmenu
     cd /usr/src/dmenu
     git config --add core.filemode false
     chmod -R 777 /usr/src/dmenu
       #patches
     make && make install
+}
+dmenu
 
 #The Suckless DWM
+dwm(){
   git clone http://git.suckless.org/dwm /usr/src/dwm
     cd /usr/src/dwm
     chmod -R 777 /usr/src/dwm
     git config --add core.filemode false
       curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
     make && make install
+}
+dwm
 
-#The Suckless ST
-  rm -rf /usr/src/st
-  git clone http://git.suckless.org/st /usr/src/st
-    cd /usr/src/st
-    git config --add core.filemode false
-    chmod -R 777 /usr/src/st
-    git checkout tags/0.8.2
-      curl https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.2.diff | git apply 
-      #curl https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff | git apply 
-      curl https://st.suckless.org/patches/scrollback/st-scrollback-0.8.2.diff | git apply 
-      curl https://st.suckless.org/patches/scrollback/st-scrollback-mouse-0.8.2.diff | git apply 
-      curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
-    make && make install
+#Install terminal
+  terminal
 
 #The .files
+dotfiles(){
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bash_login > $userdir/.bash_login
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > $userdir/.bashrc
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > $userdir/.xinitrc
-  
+}
+dotfiles
+
 #Download some wallpapers
   mkdir -p $userdir/.config/wallpapers
   tar vzfx wallpaper.tar $userdir/.config/wallpapers
 
 #System information
-  mkdir -p $userdir/.config/pcinfo
-  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/pcinfo/script.sh > $userdir/.config/pcinfo/script.sh
-  chmod +x $userdir/.config/pcinfo/script.sh
+  mkdir -p $userdir/script
+  curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/pcinfo/script.sh > $userdir/script/script.sh
+  chmod +x $userdir/script/script.sh
 
 #Give back to Caesar what is Caesar's and to God what is God's
   chown -R $username $userdir

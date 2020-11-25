@@ -1,2 +1,2 @@
-setxkbmap -layout us -variant intl  #American keyboard with acentuation
-setxkbmap -layout br -variant abnt2 #Brasilian Keyboard ABNT2
+sudo setxkbmap -layout us -variant intl
+sudo setxkbmap -model thinkpad60 -layout br -variant abnt2

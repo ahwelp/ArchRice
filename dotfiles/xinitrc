@@ -12,8 +12,18 @@
   done &
 
 #keyboard layouts
-  setxkbmap -layout us -variant intl #$American keyboard with acentuation
-  #setxkbmap -layout br -variant abnt2 #Brasilian Keyboard ABNT2
+  product=`cat /sys/devices/virtual/dmi/id/product_name`
+  if [ "$product" == "MacBookAir1,1" ]; then
+  
+  fi
+  if [ "$product" == "20BUS3V100" ]; then
+    #Brasilian Keyboard ABNT2 ThinkPad T450
+    setxkbmap -model thinkpad60 -layout br -variant abnt2
+  fi
+  if [ `grep obins < /proc/bus/input/devices | wc -l` > 0 ]; then
+    #American keyboard with acentuation Obins Anne Pro
+    setxkbmap -layout us -variant intl
+  fi
 
 #Transparency (Experimental)
   #xcompmgr -c &
