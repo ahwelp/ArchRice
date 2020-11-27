@@ -20,3 +20,5 @@ INSTALLATION
 ```
 MacBook Post
 https://bbs.archlinux.org/viewtopic.php?pid=1919903#p1919903
+MacBook Keyboard 
+https://wiki.archlinux.org/index.php/Apple_Keyboard
