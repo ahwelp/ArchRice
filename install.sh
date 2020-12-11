@@ -194,10 +194,9 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
 #The vim
   pacman -S --noconfirm vim
   sudo -u $username yay -S nerd-fonts-inconsolata --noconfirm
-  #wget https://github.com/ahwelp/arch_rice/raw/master/vim.tar -O /tmp/vim.tar
   rm -rf $userdir/.vim
-  tar vzfx vim.tar -C $userdir
-  echo "source ~/.vim/.vimrc" > $userdir/.vimrc
+  #tar vzfx vim.tar -C $userdir
+  #echo "source ~/.vim/.vimrc" > $userdir/.vimrc
 
 #A browser
   browser
