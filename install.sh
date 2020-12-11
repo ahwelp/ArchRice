@@ -1,12 +1,12 @@
 #https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_T450s
 
-#[ "$1" == "st" ] && ! terminal() #Needs a youtube link 
-#[ "$1" == "dwm" ] && ! dwm()  #Needs a youtube link 
-#[ "$1" == "dmenu" ] && ! dmenu() #Needs a youtube link 
+#[ "$1" == "st" ] && ! terminal() 
+#[ "$1" == "dwm" ] && ! dwm()  
+#[ "$1" == "dmenu" ] && ! dmenu() 
 
 #[ "$1" != "" ] && terminal && exit 
 
-#The Suckless ST
+#The Suckless ST ##############################################################
 terminal(){
   rm -rf /usr/src/st
   git clone http://git.suckless.org/st /usr/src/st
@@ -21,9 +21,62 @@ terminal(){
       curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
     make && make install
 }
-terminal
+
+# DWM installation ############################################################
+dwm(){
+  git clone http://git.suckless.org/dwm /usr/src/dwm
+    cd /usr/src/dwm
+    chmod -R 777 /usr/src/dwm
+    git config --add core.filemode false
+      curl https://dwm.suckless.org/patches/autostart/dwm-autostart-20200610-cb3f58a.diff | git apply
+      #curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
+    make && make install
+}
+
+# YAY installation ############################################################
+yayinstall(){
+  git clone https://aur.archlinux.org/yay-bin.git /usr/src/yay-bin
+  cd /usr/src/yay-bin
+  git config --add core.filemode false
+  chmod -R 777 /usr/src/yay-bin
+  sudo -u $username makepkg -si --noconfirm
+}
+
+
+# DMENU installation ###########################################################
+dmenu(){
+  git clone http://git.suckless.org/dmenu /usr/src/dmenu
+    cd /usr/src/dmenu
+    git checkout tags/4.9
+    git config --add core.filemode false
+    chmod -R 777 /usr/src/dmenu
+      #patches
+      curl https://tools.suckless.org/dmenu/patches/grid/dmenu-grid-4.9.diff | git apply
+      curl https://tools.suckless.org/dmenu/patches/center/dmenu-center-20200111-8cd37e1.diff | git apply
+    make && make install
+}
+
+# Browser installation #########################################################
+browser(){
+  git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
+    cd /usr/src/brave-bin
+    git config --add core.filemode false
+    chmod -R 777 /usr/src/brave-bin
+    sudo -u $username makepkg -si --noconfirm
+}
 
 product=`cat /sys/devices/virtual/dmi/id/product_name`
+
+
+###############################################################################
+ _____ _             _         _   _               
+/  ___| |           | |       | | | |              
+\ `--.| |_ __ _ _ __| |_ ___  | |_| | ___ _ __ ___ 
+ `--. \ __/ _` | '__| __/ __| |  _  |/ _ \ '__/ _ \
+/\__/ / || (_| | |  | |_\__ \ | | | |  __/ | |  __/
+\____/ \__\__,_|_|   \__|___/ \_| |_/\___|_|  \___|
+
+###############################################################################
 
 #UEFI Bootloader
   if [ ! -d "/boot/loader" ]; then
@@ -66,10 +119,8 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
   #sudo pacman -S netctl dialog
 
 #Some x-things
-  pacman -S --noconfirm xorg-server
-  pacman -S --noconfirm xorg-xinit
-  pacman -S --noconfirm xcompmgr
-  pacman -S --noconfirm transset-df
+  pacman -S --noconfirm xorg-server xorg-xinit
+  pacman -S --noconfirm transset-df xcompmgr
   pacman -S --noconfirm xorg-xsetroot xorg-xkill
 
 #Create the xorg file And configure transparence
@@ -78,12 +129,8 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
   printf 'Section "Extensions" \n Option  "Composite" "true" \n EndSection' >> /etc/X11/xorg.conf
 
 #System Helpers
-  pacman -S --noconfirm git
-  pacman -S --noconfirm man 
-  pacman -S --noconfirm curl 
-  pacman -S --noconfirm wget 
-  pacman -S --noconfirm lm_sensors 
-  pacman -S --noconfirm arandr 
+  pacman -S --noconfirm git man curl
+  pacman -S --noconfirm wget lm_sensors arandr 
   pacman -S --noconfirm ntfs-3g 
 
 #Def ine the user home dir and identity
@@ -99,11 +146,7 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
   fi
   
 #YAY - Use with yay -S
-  git clone https://aur.archlinux.org/yay-bin.git /usr/src/yay-bin
-  cd /usr/src/yay-bin
-  git config --add core.filemode false
-  chmod -R 777 /usr/src/yay-bin
-  sudo -u $username makepkg -si --noconfirm
+  yayinstall
 
 #Audio Configuration - F*** Why so hard? It's just sound
   pacman -S --noconfirm alsa-firmware #Just to be shure
@@ -125,6 +168,12 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
   pacman -S --noconfirm noto-fonts-emoji
     yay -S libxft-bgra #Color emoji fix
   
+#Desktop Notifications
+  pacman -S --noconfigm libnotify dunst
+    mkdir ~/.config/dnust/
+    curl https://raw.githubusercontent.com/LukeSmithxyz/voidrice/efa9fffae21abdcf207678655a446770082afd9a/.config/dunst/dunstrc > ~/.config/dnust/dunstrc
+
+
 #Branding
   curl https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch > /usr/local/bin/neofetch
     chmod +x /usr/local/bin/neofetch
@@ -151,36 +200,13 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
   echo "source ~/.vim/.vimrc" > $userdir/.vimrc
 
 #A browser
-browser(){
-  git clone https://aur.archlinux.org/brave-bin.git /usr/src/brave-bin
-    cd /usr/src/brave-bin
-    git config --add core.filemode false
-    chmod -R 777 /usr/src/brave-bin
-    sudo -u $username makepkg -si --noconfirm
-}
-browser
+  browser
 
-#The Suckless Dmenu
-dmenu(){
-  git clone http://git.suckless.org/dmenu /usr/src/dmenu
-    cd /usr/src/dmenu
-    git config --add core.filemode false
-    chmod -R 777 /usr/src/dmenu
-      #patches
-    make && make install
-}
-dmenu
+#Install terminal
+  dmenu
 
-#The Suckless DWM
-dwm(){
-  git clone http://git.suckless.org/dwm /usr/src/dwm
-    cd /usr/src/dwm
-    chmod -R 777 /usr/src/dwm
-    git config --add core.filemode false
-      curl https://raw.githubusercontent.com/ahwelp/ArchRice/master/patches/st-font-adaptation.diff | git apply 
-    make && make install
-}
-dwm
+#Install terminal
+  dwm
 
 #Install terminal
   terminal
@@ -191,7 +217,7 @@ dotfiles(){
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/bashrc > $userdir/.bashrc
   curl https://raw.githubusercontent.com/ahwelp/arch_rice/master/dotfiles/xinitrc > $userdir/.xinitrc
 }
-dotfiles
+  dotfiles
 
 #Download some wallpapers
   mkdir -p $userdir/.config/wallpapers

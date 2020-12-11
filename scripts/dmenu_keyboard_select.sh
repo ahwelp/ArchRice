@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cat keyboards_source  | dmenu | xargs  
+cat keyboards_source  | rofi | xargs  
 
