@@ -78,17 +78,44 @@ product=`cat /sys/devices/virtual/dmi/id/product_name`
 
 ###############################################################################
 
-#UEFI Bootloader
-  if [ ! -d "/boot/loader" ]; then
-    bootctl install
-    uuid=`cat /etc/fstab | grep ext4 | grep '/' | cut -d $'\t' -f1 | cut -d '=' -f 2`
-    partuuid=`blkid | grep $uuid | cut -d' ' -f 7 | sed 's/\"//g'`
-    printf "default arch\ntimeout 2" > /boot/loader/loader.conf
-    printf "title ArchLinux\nlinux /vmlinuz-linux\ninitrd /initramfs-linux.img\noptions root=$partuuid rw irqpoll" > /boot/loader/entries/arch.conf
-  else
-    echo "There is a bootloader -- Force to continue"
-    exit
+# === UEFI Bootloader Setup ===
+if [ ! -d "/boot/loader" ]; then
+  echo "[INFO] Installing systemd-boot..."
+  bootctl install
+
+  # Detecta automaticamente a partição root montada em /
+  rootdev=$(findmnt / -o SOURCE -n)
+
+  # Obtém o PARTUUID (que o systemd-boot prefere)
+  partuuid=$(blkid -s PARTUUID -o value "$rootdev")
+
+  # Verifica se encontrou corretamente
+  if [ -z "$partuuid" ]; then
+    echo "[ERRO] Não foi possível detectar o PARTUUID da partição root ($rootdev)"
+    echo "Verifique com: blkid $rootdev"
+    exit 1
   fi
+
+  # Cria arquivos do systemd-boot
+  cat > /boot/loader/loader.conf <<EOF
+default arch
+timeout 2
+editor no
+EOF
+
+  cat > /boot/loader/entries/arch.conf <<EOF
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=PARTUUID=$partuuid rw
+EOF
+
+  echo "[OK] Bootloader configurado com root=PARTUUID=$partuuid"
+else
+  echo "[WARN] Já existe um bootloader instalado. Abortando para evitar sobrescrever."
+  exit 0
+fi
+
 
 #Locale info ##May need to generate for the user too not just root
   ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
