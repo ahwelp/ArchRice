@@ -215,8 +215,7 @@ fi
   pacman -S --noconfirm openconnect
 
 #The Secrets
-  sudo -u $username yay -S --noconfirm veracrypt-git
-  sudo -u $username yay -S --noconfirm secure-delete
+  sudo -u $username yay -S --noconfirm veracrypt-git keepassxc
 
 #The vim
   pacman -S --noconfirm vim
