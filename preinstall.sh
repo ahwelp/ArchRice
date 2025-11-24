@@ -23,7 +23,7 @@ SWAP_SIZE="+8G"  #+xGB to the size
 BASE_SIZE=""     #Left Empty for the rest of the drive
 
 # Creating Disk Gemometry
-printf "g\nn\n\n\n$BOOT_SIZE\nt\n1\nef\nn\n\n\n$SWAP_SIZE\nt\n2\n82\nn\n\n\nw\n" | fdisk /dev/sda
+printf "g\nn\n\n\n+$BOOT_SIZE\nt\n1\n1\nn\n\n\n+$SWAP_SIZE\nt\n2\n19\nn\n\n\n${BASE_SIZE}\nw\n" | fdisk /dev/sda
 
 # Formating
 mkfs.fat -F 32 /dev/sda1 #Format in FAT 32 format
